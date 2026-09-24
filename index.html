@@ -1,0 +1,2440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>aten-ia | La revolución de los videojuegos</title>
+<link rel="icon" href="img/logo aten-ia.png" type="image/png">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+:root{
+    --color-bg: #17181A;
+    --color-panel: #1E2228;
+    --color-panel-light: #2A2F36;
+    --color-orange: #F5701E;
+    --color-orange-dark: #B33D0E;
+    --color-navy: #2B3D50;
+    --color-cyan: #38C0D3;
+    --color-white: #FFFFFF;
+    --color-text-muted: #B7BCC3;
+    --color-green: #4CAF50;
+    --font-display: 'Oswald', 'Arial Narrow', sans-serif;
+    --font-body: 'Poppins', 'Segoe UI', Arial, sans-serif;
+}
+
+*, *::before, *::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background: var(--color-bg) url('img/fondo juegos.png') no-repeat center center fixed;
+    background-size: cover;
+    color: var(--color-white);
+    font-family: var(--font-body);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+img{
+    display: block;
+    max-width: 100%;
+}
+
+button{
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.home-screen{
+    transition: filter 0.35s ease;
+    min-height: 100vh;
+}
+
+.home-screen.is-blurred{
+    filter: blur(10px) brightness(0.6);
+    pointer-events: none;
+}
+
+.home-header{
+    position: relative;
+    padding: 20px 40px;
+    height: 80px;
+}
+
+.home-logo{
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    height: 170px;
+    width: auto;
+    filter: brightness(0) invert(1);
+    z-index: 10;
+}
+
+.hero{
+    position: relative;
+    padding: 20px 40px 60px;
+    overflow: hidden;
+}
+
+.hero-content{
+    position: relative;
+    max-width: 900px;
+    margin-inline: auto;
+    text-align: center;
+}
+
+.hero-kicker{
+    font-size: 1.15rem;
+    color: var(--color-text-muted);
+    margin-bottom: 8px;
+}
+
+.hero-title-row {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px auto 0;
+}
+
+.mascot-robots {
+    position: absolute;
+    right: 100%;
+    margin-right: 20px;
+    width: 260px;
+    height: auto;
+    pointer-events: none;
+}
+
+.mascot-detective {
+    position: absolute;
+    left: 100%;
+    margin-left: 20px;
+    width: 130px;
+    height: auto;
+    pointer-events: none;
+}
+
+.hero-title-img {
+    max-width: 460px;
+    width: 100%;
+    height: auto;
+}
+
+.hero-subtitle{
+    margin-top: 22px;
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
+    max-width: 650px;
+    margin-inline: auto;
+}
+
+.nucleos{
+    max-width: 960px;
+    margin-inline: auto;
+    padding: 0 40px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.nucleo-card{
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--color-panel);
+    aspect-ratio: 4 / 3;
+}
+
+.nucleo-photo{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.nucleo-card::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 55%, rgba(0,0,0,0) 100%);
+}
+
+.nucleo-caption{
+    position: absolute;
+    left: 100px;
+    right: 20px;
+    bottom: 22px;
+    z-index: 2;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--color-white);
+}
+
+.nucleo-caption span{
+    color: var(--color-orange);
+    text-decoration: underline;
+}
+
+.play-btn{
+    position: absolute;
+    left: 18px;
+    bottom: 16px;
+    z-index: 3;
+    width: 64px;
+    height: 64px;
+    border-radius: 0;
+    overflow: hidden;
+    padding: 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.play-btn img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.quiz-overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 100;
+    padding: 20px;
+}
+
+.quiz-overlay.is-active{
+    opacity: 1;
+    pointer-events: all;
+}
+
+.quiz-modal{
+    position: relative;
+    width: 100%;
+    max-width: 980px;
+    max-height: 92vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: var(--color-panel);
+    border-radius: 18px;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+}
+
+.quiz-close{
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    z-index: 10;
+    font-size: 1.8rem;
+    color: var(--color-white);
+    opacity: 0.7;
+}
+
+.quiz-stage {
+    position: relative;
+    min-height: 480px;
+    background-color: var(--color-panel);
+    background-image: url('img/fondo juegos.png');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    padding: 30px 40px;
+    transition: opacity 0.22s ease-in-out;
+}
+
+.quiz-stage.is-fading { opacity: 0; }
+
+.quiz-question-wrap {
+    position: relative;
+    z-index: 6;
+    width: min(580px, 90%);
+    min-height: 120px;
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 40px 30px;
+}
+
+.quiz-speech-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    z-index: -1;
+}
+
+.quiz-question {
+    position: relative;
+    z-index: 2;
+    font-family: 'Space Grotesk', sans-serif; 
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.quiz-interactive-group {
+    position: absolute;
+    width: 750px;        
+    height: 400px;
+    left: -200px;        
+    bottom: -200px;      
+    z-index: 4;
+    transition: all 0.2s ease;
+}
+
+.quiz-control-wrap {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.quiz-control {
+    width: 100%;
+    height: auto;
+    transform: rotate(-15deg);
+}
+
+.quiz-answers {
+    position: absolute;
+    right: -40px;      
+    top: 42%;          
+    transform: translateY(-50%);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.quiz-answer {
+    position: relative;
+    width: 155px;    
+    aspect-ratio: 422 / 105;
+    cursor: pointer;
+}
+
+.quiz-answer[data-answer="no"] { transform: translate(-5px, -113px) scale(1.4); }
+.quiz-answer[data-answer="si"] { transform: translate(-45px, -93px) scale(1.4); }
+
+.quiz-answer[data-answer="si"] .quiz-answer-icon {
+    transform: rotate(0deg); 
+    transform-origin: center center;
+}
+
+.quiz-answer-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+}
+
+.quiz-answer-bg.is-active-layer { opacity: 0; }
+
+.quiz-answer-icon {
+    position: absolute;
+    left: 1%;
+    top: 0;
+    width: 24.6%;
+    height: 99%;
+    object-fit: contain;
+}
+
+.quiz-answer-icon.is-active-layer { opacity: 0; }
+
+.quiz-answer-text {
+    position: absolute;
+    left: 35.5%;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 34%;
+}
+
+.quiz-answer:hover .quiz-answer-bg.is-normal-layer,
+.quiz-answer:hover .quiz-answer-icon.is-normal-layer { opacity: 0; }
+
+.quiz-answer:hover .quiz-answer-bg.is-active-layer,
+.quiz-answer:hover .quiz-answer-icon.is-active-layer { opacity: 1; }
+
+.quiz-mascot-wrap {
+    position: absolute;
+    right: 20px;
+    bottom: 50px;
+    width: 250px;
+    z-index: 4;
+    pointer-events: none;
+}
+
+.quiz-progress-wrap {
+    position: absolute;
+    right: 40px;
+    bottom: 18px;
+    z-index: 5;
+    width: 240px;
+}
+
+.results-stage{
+    position: relative;
+    background-color: var(--color-panel);
+    background-image: url('img/fondo juegos.png');
+    background-size: cover;
+    background-position: center;
+    padding: 25px 30px;
+    display: none;
+}
+
+.results-stage.is-visible{ display: block; }
+
+.results-grid{
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 20px;
+    align-items: stretch;
+    min-height: 520px;
+}
+
+.results-left-card{
+    position: relative;
+    background: rgba(30, 34, 40, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.results-title{
+    font-size: 1.1rem;
+    color: var(--color-white);
+    margin-bottom: 2px;
+}
+
+.results-card-mascot{
+    height: 120px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    margin: 4px auto 12px auto;
+}
+
+.results-highlight{
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    line-height: 1.2;
+    margin-bottom: 8px;
+}
+
+.results-content-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.results-text-block { flex: 1; }
+
+.results-text-block p {
+    font-size: 1rem;
+    line-height: 1.45;
+    color: var(--color-white);
+    margin-bottom: 4px;
+}
+
+.results-left-card.hide-racha .racha-interactive-container { display: none; }
+
+.racha-interactive-container {
+    cursor: pointer;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 110px;  
+    height: 210px; 
+    flex-shrink: 0;
+    position: relative;
+}
+
+.racha-bar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: bottom center;
+}
+
+.facha-options-strip {
+    display: none;
+    position: relative;
+    width: 100%;
+    margin-top: 4px;
+    padding-top: 10px;
+}
+
+.results-left-card.is-facha .facha-options-strip { display: flex; }
+
+.facha-strip-bg-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 14px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    display: none;
+}
+
+.facha-options-strip.sel-14 .facha-strip-bg-line.bg-14 { display: block; background-image: url('img/Rect-porc-naranja.png'); }
+.facha-options-strip.sel-28 .facha-strip-bg-line.bg-28 { display: block; background-image: url('img/Rect-porc-amarillo.png'); }
+.facha-options-strip.sel-8  .facha-strip-bg-line.bg-8  { display: block; background-image: url('img/Rect-porc-verde.png'); }
+.facha-options-strip.sel-6  .facha-strip-bg-line.bg-6  { display: block; background-image: url('img/Rect-porc-celeste.png'); }
+
+.facha-strip-inner {
+    display: flex;
+    width: 100%;
+    gap: 4px;
+}
+
+.facha-opt-box {
+    flex: 1;
+    aspect-ratio: 1 / 1;
+    background: #525960;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, filter 0.2s ease;
+    padding: 4px;
+}
+
+.facha-opt-box img {
+    width: 85%;
+    height: 85%;
+    object-fit: contain;
+}
+
+.facha-opt-box[data-pct="14"].is-selected { background: #D9822B; }
+.facha-opt-box[data-pct="28"].is-selected { background: #B5A038; }
+.facha-opt-box[data-pct="8"].is-selected  { background: #4FA573; }
+.facha-opt-box[data-pct="6"].is-selected  { background: #5283A3; }
+
+.facha-options-strip.has-selection .facha-opt-box:not(.is-selected) { background: #3A3F45; }
+.facha-options-strip.has-selection .facha-opt-box:not(.is-selected) img { filter: grayscale(1) opacity(0.6); }
+
+.results-right-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+    height: 100%;
+}
+
+.results-chart-box{
+    position: relative;
+    background-image: url('img/rec grafico resultado.png');
+    background-size: 100% 100%;
+    background-position: center;
+    border-radius: 14px;
+    padding: 50px 20px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    flex: 1;
+}
+
+.chart-header-title {
+    position: absolute;
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220px;
+    height: auto;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.chart-bars{
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 14px;
+    height: 230px;
+}
+
+.chart-bar{
+    position: relative;
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    cursor: pointer;
+}
+
+.bar-transp-bg {
+    position: absolute;
+    bottom: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 2;
+    background-repeat: no-repeat;
+    background-size: 100% 100%; 
+}
+
+#bar-14 .bar-transp-bg { background-image: url('img/Barra-transp-naranja.png'); height: 300px; width: 85%; left: 7px; bottom: 60px; }
+#bar-28 .bar-transp-bg { background-image: url('img/Barra-transp-amarillo.png'); height: 260px; width: 86%; left: 6px; bottom: 100px; }
+#bar-8 .bar-transp-bg  { background-image: url('img/Barra-transp-verde.png'); height: 325px; width: 86%; left: 6px; bottom: 35px; }
+#bar-6 .bar-transp-bg  { background-image: url('img/Barra-transp-celeste.png'); height: 335px; width: 86%; left: 7px; bottom: 25px; }
+#bar-44 .bar-transp-bg { background-image: url('img/Barra-transp-rojo.png'); height: 225px; width: 85%; left: 7px; bottom: 135px; }
+
+.chart-bar.is-active .bar-transp-bg { opacity: 1; }
+
+.bar-mascot{ position: relative; z-index: 3; width: 60%; margin-bottom: 2px; }
+.bar-pct{ position: relative; z-index: 3; font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; color: var(--color-white); margin-bottom: 2px; }
+.bar-visual{ position: relative; z-index: 2; width: 100%; display: flex; justify-content: center; align-items: flex-end; }
+.bar-img{ display: block; width: 85%; height: 100%; object-fit: cover; }
+
+.chart-bar:nth-child(1) .bar-visual{ height: 60px; }
+.chart-bar:nth-child(2) .bar-visual{ height: 115px; }
+.chart-bar:nth-child(3) .bar-visual{ height: 36px; }
+.chart-bar:nth-child(4) .bar-visual{ height: 28px; }
+.chart-bar:nth-child(5) .bar-visual{ height: 175px; }
+
+.results-detail-panel {
+    background: rgba(30, 34, 40, 0.8);
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 14px 20px;
+    min-height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.results-detail-text { font-size: 1.1rem; color: var(--color-text-muted); font-weight: 500; }
+.results-detail-text strong { color: var(--color-white); }
+
+.explore-section {
+    margin-top: 35px;
+    padding-top: 10px;
+    text-align: center;
+}
+
+.explore-title {
+    font-family: var(--font-body);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-white);
+    margin-bottom: 20px;
+}
+
+.explore-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.explore-card {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: url('img/Rect-seguir.png') no-repeat center center;
+    background-size: cover;
+    padding: 6px;
+}
+
+.explore-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.explore-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.explore-card-btn {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    cursor: pointer;
+    display: block;
+    transition: transform 0.2s ease;
+}
+
+.explore-card-btn:hover { transform: scale(1.02); }
+
+.explore-card-inner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 55%, rgba(0,0,0,0) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.explore-card-btn::after { display: none; }
+
+.trivia-stage{
+    position: relative;
+    min-height: 550px;
+    background-color: var(--color-panel);
+    background-image: url('img/fondo juegos.png');
+    background-size: cover;
+    background-position: center;
+    padding: 30px 30px;
+    overflow: hidden;
+}
+
+.trivia-intro{
+    position: relative;
+    z-index: 3;
+    max-width: 900px;
+    margin: 0 auto 20px;
+}
+
+.trivia-title{ 
+    font-family: 'Space Grotesk', sans-serif; 
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem); 
+    font-weight: 700; 
+    text-transform: uppercase; 
+    color: var(--color-cyan); 
+    margin-bottom: 10px; 
+}
+
+.trivia-subtitle{ 
+    font-size: 1.1rem; 
+    color: var(--color-text-muted); 
+    line-height: 1.5; 
+    margin-bottom: 8px; 
+}
+
+.gta-case-study {
+    position: relative;
+    background: url('img/Rectangle 5296.png') no-repeat center center;
+    background-size: 100% 100%;
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.gta-logo-topleft {
+    position: absolute;
+    top: -12px;
+    left: -10px;
+    width: 100px;
+    height: auto;
+    z-index: 5;
+}
+
+.gta-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 28px;
+    align-items: center;
+}
+
+.gta-row-photo-wrap {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gta-photo-monstruitos {
+    width: 100%;
+    max-height: 160px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.gta-double-photos {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.gta-photo-small {
+    flex: 1;
+    width: 50%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.gta-text-block h4 {
+    font-size: 1.15rem;
+    color: var(--color-cyan);
+    margin-bottom: 6px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+}
+
+.gta-text-block p {
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: #E2E8F0;
+}
+
+.gta-divider-line {
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.15);
+    margin: 25px 0;
+    border-radius: 2px;
+}
+
+/* ÁREA INTERACTIVA TRIVIA Y POSICIÓN BURBUJA + BOTONES */
+.trivia-content-area{
+    position: relative;
+    z-index: 4;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.trivia-interactive-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 320px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+.trivia-interactive-wrapper.has-feedback .signos-preguntas-img { display: none; }
+
+.neon-lines-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.line-falso-rosa,
+.line-verdadero-celeste,
+.line-correcto-verde,
+.line-incorrecto-rojo {
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.neon-lines-container.state-question .line-falso-rosa,
+.neon-lines-container.state-question .line-verdadero-celeste { opacity: 1; }
+.neon-lines-container.state-correct .line-correcto-verde { opacity: 1; }
+.neon-lines-container.state-incorrect .line-incorrecto-rojo { opacity: 1; }
+
+.line-falso-rosa { 
+    background-image: url('img/linea-falso-rosa.png');
+    height: 80px;
+    width: 107%;
+    left: -30px;
+    top: 38%;
+}
+
+.line-verdadero-celeste { 
+    background-image: url('img/linea-verdadero-celeste.png');
+    height: 80px;
+    width: 107%;
+    left: -30px;
+    top: 68%;
+}
+
+.line-correcto-verde { 
+    background-image: url('img/linea-correcto- verde.png');
+    height: 90px;
+    width: 107%;
+    left: -30px;
+    top: 52%;
+}
+
+.line-incorrecto-rojo { 
+    background-image: url('img/linea-incorrecto-rojo.png');
+    height: 90px;
+    width: 107%;
+    left: -30px;
+    top: 52%;
+}
+
+.trivia-robot-left {
+    position: relative;
+    z-index: 3;
+    width: 220px;
+    flex-shrink: 0;
+}
+
+.trivia-robot-left .signos-preguntas-img {
+    position: absolute;
+    top: -50px;
+    left: 55px;
+    width: 110px;
+    height: auto;
+    transform: scale(1.0);
+}
+
+.trivia-detective-right {
+    position: relative;
+    z-index: 3;
+    width: 250px;
+    flex-shrink: 0;
+}
+
+.trivia-center-box {
+    position: relative;
+    z-index: 4;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+}
+
+.trivia-question-bubble{
+    position: relative;
+    background-image: url('img/PREGUNTA.png');
+    background-size: 100% 100%;
+    min-height: 130px;
+    width: 100%;
+    max-width: 520px;
+    margin-bottom: 15px;
+    padding: 20px 35px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.trivia-question-text{ 
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem; 
+    line-height: 1.45; 
+    color: #FFFFFF; 
+    font-weight: 700; 
+}
+
+/* BURBUJA CORREGIDA PARA NO INVASIÓN HACIA ARRIBA */
+.trivia-feedback-container {
+    position: relative;
+    background-size: 100% 100%;
+    min-height: 140px;
+    width: 100%;
+    max-width: 520px;
+    margin-bottom: 20px;
+    padding: 15px 35px 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transform: translateY(0px); 
+}
+
+.trivia-feedback-container.is-correct{ background-image: url('img/CORRECTO.png'); }
+.trivia-feedback-container.is-incorrect{ background-image: url('img/INCORRECTO.png'); }
+
+.trivia-feedback-title{ 
+    font-family: 'Space Grotesk', sans-serif; 
+    font-weight: 700; 
+    text-transform: uppercase; 
+    font-size: 1.35rem; 
+    color: var(--color-white); 
+    margin-bottom: 6px; 
+}
+
+.trivia-feedback-text{ 
+    font-size: 0.98rem; 
+    color: var(--color-white); 
+    line-height: 1.35; 
+}
+
+.trivia-actions-center{ 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 12px; 
+    width: 100%; 
+    max-width: 210px; 
+    margin-top: 10px; 
+}
+
+.trivia-answer-btn[data-answer="falso"] { transform: translateY(-30px); }
+.trivia-answer-btn[data-answer="verdadero"] { transform: translateY(-10px); }
+.trivia-answer-btn[data-answer="falso"]:hover { transform: translateY(-30px) scale(1.02); }
+.trivia-answer-btn[data-answer="verdadero"]:hover { transform: translateY(-10px) scale(1.02); }
+
+.trivia-answer-btn, .trivia-next-btn, .trivia-reset-btn{ 
+    padding: 0; 
+    background: none; 
+    border: none; 
+    cursor: pointer; 
+    width: 100%; 
+    transition: transform 0.2s ease; 
+}
+
+/* BOTONES BAJADOS Y SIN TRASLACIÓN EXTRA */
+.trivia-next-btn, .trivia-reset-btn {
+    transform: translateY(0px);
+}
+
+.trivia-answer-btn img, .trivia-next-btn img, .trivia-reset-btn img{ width: 100%; height: auto; display: block; }
+
+.trivia-question-phase, .trivia-feedback-phase{ width: 100%; display: none; }
+.trivia-question-phase.is-visible, .trivia-feedback-phase.is-visible{ display: flex; flex-direction: column; align-items: center; }
+
+/* INFOGRAFÍA Y RESULTADO FINAL NÚCLEO 2 */
+.charts-section{ 
+    position: relative; 
+    z-index: 5; 
+    display: none; 
+    flex-direction: column; 
+    gap: 36px; 
+    margin-top: 10px; 
+    padding-bottom: 40px; 
+    max-width: 900px;
+    margin-inline: auto;
+}
+.charts-section.is-visible{ display: flex; }
+
+.n2-intro-text {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+    margin-bottom: 14px;
+}
+.n2-intro-text strong { color: var(--color-cyan); }
+.text-cyan-label { color: var(--color-cyan) !important; font-weight: 600; }
+
+/* ROBOTS UBICADOS SOBRE LA ESQUINA SUPERIOR DERECHA DEL CUADRO */
+.g1-top-robots {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 197px;
+    height: auto;
+    z-index: 20;
+    pointer-events: none;
+    margin: 0 !important;
+    image-rendering: -webkit-optimize-contrast;
+}
+
+/* GRÁFICO 1 */
+.hs-g1-container {
+    position: relative;
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+    padding-top: 45px;
+    padding-bottom: 15px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(30, 34, 40, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.g1-main-title {
+    font-family: 'Space Grotesk', var(--font-body), sans-serif;
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    text-align: center;
+    margin-bottom: 18px;
+    letter-spacing: -0.5px;
+}
+
+.g1-labels-header {
+    position: absolute;
+    top: 85px;
+    left: 40px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.g1-subtitle {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 2px;
+}
+
+.g1-interactive-hint {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+.n2-graphic-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* REGLA BASE COMPARTIDA DE BOTONES INTERACTIVOS */
+.n2-hotspot{
+    position: absolute;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.2s ease;
+}
+
+.n2-hotspot img { width: 100%; height: 100%; object-fit: contain; }
+.n2-hotspot .img-hover { display: none; }
+.n2-hotspot:hover { transform: translate(-50%, -50%) scale(1.18); }
+.n2-hotspot:hover .img-default { display: none; }
+.n2-hotspot:hover .img-hover { display: block; }
+
+/* ========================================================= */
+/* CONTROL DE ZOOM / TAMAÑO DE ÍCONOS DEL GRÁFICO 2        */
+/* ========================================================= */
+
+.n2-hotspot-blue {
+    width: 60px !important;
+    height: 60px !important;
+}
+
+.n2-hotspot-orange {
+    width: 65px !important;
+    height: 65px !important;
+}
+
+/* ========================================================= */
+/* POSICIONES DE LOS BOTONES GRÁFICO 1                      */
+/* ========================================================= */
+.hs-g1-2024 { top: 82.3%; left: 19%; }
+.hs-g1-2025 { top: 54.5%; left: 52.5%; }
+.hs-g1-2026 { top: 30.5%; left: 86.6%; }
+
+/* CASOS GTA, TFOA, GTA 6 */
+.n2-cases-wrapper {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.n2-case-card {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 24px;
+    background: rgba(30, 34, 40, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 18px 22px;
+    align-items: center;
+}
+
+.n2-case-img {
+    width: 100%;
+    height: 135px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.n2-case-desc {
+    font-size: 1.05rem;
+    color: #E2E8F0;
+    line-height: 1.5;
+}
+
+.n2-case-desc strong { color: var(--color-cyan); }
+
+/* FUENTES DEL SEGUNDO GRÁFICO */
+.n2-sources-header {
+    text-align: center;
+    max-width: 820px;
+    margin: 0 auto 12px;
+}
+
+.n2-sources-pics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 580px;
+    margin: 16px auto 20px;
+}
+
+.n2-sources-pics img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.n2-break-paragraph { margin-top: 10px; }
+
+/* GRÁFICO 2 CON MASCOTAS PERSONAJES */
+.hs-g2-container {
+    position: relative;
+    width: 100%;
+    max-width: 850px;
+    margin: 40px auto 0;
+    padding-top: 35px;
+    padding-bottom: 25px;
+    border-radius: 14px;
+    background: rgba(30, 34, 40, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* LÍNEA DE AJUSTE CSS DE IMAGEN DEL GRÁFICO 2 */
+.hs-g2-container .n2-graphic-img {
+    transform: scale(1.10) translate(70px, 0px);
+}
+
+/* LEYENDA INFERIOR IZQUIERDA GRÁFICO 2 */
+.g2-legend-footer {
+    position: absolute;
+    bottom: 20px;
+    left: 40px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.g2-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.g2-legend-icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.g2-legend-item.cyan span {
+    color: var(--color-cyan);
+}
+
+.g2-legend-item.orange span {
+    color: var(--color-orange);
+}
+
+.g2-legend-item.orange .g2-legend-icon {
+    width: 40px !important;
+    height: 40px !important;
+    margin-left: -5px !important; /* Lo empuja hacia la izquierda para alinearlo con el azul */
+    margin-right: -5px !important; /* Corrige el espacio respecto al texto */
+}
+
+.g2-top-left-mascot {
+    position: absolute;
+    top: -75px;   /* ↕ Subir / Bajar */
+    left: 20px;   /* ↔ Izquierda / Derecha */
+    width: 75px;  /* 🔍 Tamaño/Ancho del personaje */
+    height: auto;
+    z-index: 20;
+    pointer-events: none;
+}
+
+.g2-top-right-mascot {
+    position: absolute;
+    top: -70px;   /* ↕ Subir / Bajar */
+    right: 20px;  /* ↔ Izquierda / Derecha */
+    width: 75px;  /* 🔍 Tamaño/Ancho del personaje */
+    height: auto;
+    z-index: 20;
+    pointer-events: none;
+}
+
+.g2-main-title {
+    font-family: 'Space Grotesk', var(--font-body), sans-serif;
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.g2-labels-header {
+    position: absolute;
+    top: 85px;
+    left: 20px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.g2-subtitle {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.2;
+}
+
+.hs-g2-blue-2024 { top: 54.4%; left: 21.7%; }
+.hs-g2-blue-2025 { top: 50.1%; left: 58.0%; }
+.hs-g2-blue-2026 { top: 50.3%; left: 94.5%; }
+
+/* ========================================================= */
+/* POSICIONES INDIVIDUALES DE BOTONES NARANJAS              */
+/* ========================================================= */
+.hs-g2-orange-2024 { top: 63.3%; left: 21.7%; }
+.hs-g2-orange-2025 { top: 60.2%; left: 58.2%; }
+.hs-g2-orange-2026 { top: 38.0%; left: 94.1%; }
+
+/* CARDS INFORMATIVAS */
+.n2-info-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.n2-info-box {
+    border-radius: 12px;
+    padding: 22px 24px;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--color-white);
+}
+
+.n2-info-box.box-cyan {
+    background: linear-gradient(180deg, rgba(43,61,80,0.9) 0%, rgba(30,34,40,0.9) 100%);
+    border: 1px solid rgba(56,192,211,0.3);
+}
+
+.n2-info-box.box-orange {
+    background: linear-gradient(180deg, rgba(179,61,14,0.8) 0%, rgba(30,34,40,0.9) 100%);
+    border: 1px solid rgba(245,112,30,0.3);
+}
+
+.info-popup-overlay{ position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); display: flex; align-items: center; justify-content: center; z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+.info-popup-overlay.is-open{ opacity: 1; pointer-events: all; }
+.info-popup-card{ position: relative; width: 90%; max-width: 520px; background: #232830; border: 2px solid var(--color-orange); border-radius: 12px; padding: 24px 28px; }
+.info-popup-card.theme-cyan{ border-color: var(--color-cyan); }
+.info-popup-close{ position: absolute; top: 10px; right: 14px; font-size: 1.5rem; color: var(--color-text-muted); }
+.info-popup-text{ font-size: 1.05rem; line-height: 1.55; color: #E2E8F0; font-weight: 500; }
+.info-popup-text strong{ color: var(--color-white); }
+
+/* FOOTER INFOGRÁFICO Y FUENTES LIMPIAS Y CENTRADAS */
+.infographic-footer{ position: relative; z-index: 5; margin-top: 30px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.footer-logo{ width: 220px; height: auto; filter: brightness(0) invert(1); opacity: 0.9; }
+.thanks-banner{ font-family: var(--font-display); font-size: 1.9rem; font-weight: 700; text-transform: uppercase; color: var(--color-white); margin-bottom: 10px; }
+.mascots-gallery{ display: flex; align-items: center; justify-content: center; width: 100%; max-width: 650px; margin: 0 auto; padding-bottom: 10px; }
+.mascots-gallery .group-photo{ width: 100%; max-height: 240px; object-fit: contain; }
+
+/* ACORDEÓN DE FUENTES - TEXTO AJUSTADO SIN CORTAR PALABRAS */
+.sources-accordion{ width: 100%; max-width: 650px; margin: 10px auto 0; }
+
+.sources-btn{ 
+    width: 100%; 
+    background: #1E2228;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--color-white); 
+    padding: 16px 24px; 
+    border-radius: 12px; 
+    font-size: 1.1rem; 
+    font-weight: 600; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 12px; 
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.sources-btn:hover { background: #2A2F36; transform: scale(1.01); }
+
+.sources-btn .plus-icon{ font-size: 1.3rem; font-weight: bold; color: var(--color-cyan); }
+
+.sources-content{ 
+    max-height: 0; 
+    overflow: hidden; 
+    background: rgba(26, 30, 36, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: none;
+    border-radius: 0 0 12px 12px; 
+    text-align: left; 
+    font-size: 0.95rem; 
+    color: #E2E8F0; 
+    transition: max-height 0.35s ease, padding 0.35s ease; 
+}
+
+.sources-accordion.is-open .sources-content{ 
+    max-height: 600px; 
+    padding: 22px 28px; 
+    margin-top: 2px;
+}
+
+.sources-content ul{ list-style: none; padding-left: 0; }
+.sources-content li{ margin-bottom: 10px; line-height: 1.45; word-break: normal; overflow-wrap: break-word; }
+.sources-content a{ color: var(--color-cyan); text-decoration: none; font-weight: 500; }
+.sources-content a:hover{ text-decoration: underline; }
+
+@media (max-width: 860px){
+    .nucleos{ grid-template-columns: 1fr; }
+    .hero-title-row{ flex-direction: column; gap: 10px; }
+    .results-grid{ grid-template-columns: 1fr; }
+    .gta-row{ grid-template-columns: 1fr; text-align: center; }
+    .trivia-interactive-wrapper{ flex-direction: column; align-items: center; }
+    .explore-cards{ grid-template-columns: 1fr; }
+    .n2-case-card{ grid-template-columns: 1fr; }
+    .n2-info-cards{ grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="home-screen" id="home-screen">
+    <header class="home-header">
+        <img class="home-logo" src="img/aten-ia.png" alt="aten-ia">
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <p class="hero-kicker">La IA en:</p>
+            <div class="hero-title-row">
+               <img class="mascot mascot-robots" src="img/robots-grises.png" alt="Robots">
+               <img class="hero-title-img" src="img/TITULO INICIO.png" alt="La revolución de los videojuegos">
+               <img class="mascot mascot-detective" src="img/detective-naranja.png" alt="Detective">
+            </div>
+            <p class="hero-subtitle">La inteligencia artificial está transformando el panorama de la industria interactiva, adéntrate en nuestra encuesta interactiva.</p>
+        </div>
+    </section>
+
+    <section class="nucleos">
+        <article class="nucleo-card" data-nucleo="1">
+            <img class="nucleo-photo" src="img/nucleo-1-jugadores.png" alt="Los jugadores y la IA en videojuegos">
+            <button class="play-btn" type="button" aria-label="Reproducir encuesta del Núcleo 1">
+                <img src="img/btn-play-nucleo1.png" alt="">
+            </button>
+            <p class="nucleo-caption">Los <span>jugadores</span> y la IA en videojuegos</p>
+        </article>
+
+        <article class="nucleo-card" data-nucleo="2">
+            <img class="nucleo-photo" src="img/nucleo-2-desarrolladores.png" alt="Los desarrolladores y la IA en videojuegos">
+            <button class="play-btn" type="button" aria-label="Reproducir encuesta del Núcleo 2">
+                <img src="img/btn-play-nucleo2.png" alt="">
+            </button>
+            <p class="nucleo-caption">Los <span style="color: #38C0D3;">Desarrolladores</span> y la IA en videojuegos</p>
+        </article>
+    </section>
+</div>
+
+<!-- OVERLAY NÚCLEO 1 -->
+<div class="quiz-overlay" id="quiz-overlay">
+    <div class="quiz-modal">
+        <button class="quiz-close" id="quiz-close" type="button" aria-label="Cerrar encuesta">&times;</button>
+        
+        <div class="quiz-stage" id="quiz-stage">
+            <div class="quiz-question-wrap">
+                <img class="quiz-speech-bg" src="img/pregunta-nucleo1.png" alt="Globo de pregunta">
+                <h2 class="quiz-question" id="quiz-question"></h2>
+            </div>
+
+            <div class="quiz-interactive-group">
+                <div class="quiz-control-wrap">
+                    <img class="quiz-control" src="img/joystick-bg.png" alt="Joystick">
+                </div>
+
+                <div class="quiz-answers">
+                    <button class="quiz-answer" data-answer="no" type="button">
+                        <img class="quiz-answer-bg is-normal-layer" src="img/btn-bg-no-normal.png" alt="">
+                        <img class="quiz-answer-bg is-active-layer" src="img/btn-bg-no-active.png" alt="">
+                        <img class="quiz-answer-icon is-normal-layer" src="img/btn-icon-circulo-normal.png" alt="">
+                        <img class="quiz-answer-icon is-active-layer" src="img/btn-icon-circulo-active.png" alt="">
+                        <img class="quiz-answer-text" src="img/btn-text-no.png" alt="No">
+                    </button>
+                    <button class="quiz-answer" data-answer="si" type="button">
+                        <img class="quiz-answer-bg is-normal-layer" src="img/btn-bg-si-normal.png" alt="">
+                        <img class="quiz-answer-bg is-active-layer" src="img/btn-bg-si-active.png" alt="">
+                        <img class="quiz-answer-icon is-normal-layer" src="img/btn-icon-equis-normal.png" alt="">
+                        <img class="quiz-answer-icon is-active-layer" src="img/btn-icon-equis-active.png" alt="">
+                        <img class="quiz-answer-text" src="img/btn-text-si.png" alt="Sí">
+                    </button>
+                </div>
+            </div>
+
+            <div class="quiz-mascot-wrap">
+                <img class="quiz-mascot-img" id="quiz-mascot-img" src="img/inteligente-hablando.png" alt="Mascota">
+            </div>
+
+            <div class="quiz-progress-wrap">
+                <img class="quiz-progress-img" id="quiz-progress-img" src="img/progreso1-nucleo1.png" alt="Progreso">
+            </div>
+        </div>
+
+        <div class="results-stage" id="results-stage">
+            <div class="results-grid">
+                <div class="results-left-card" id="results-left-card">
+                    <p class="results-title">Tu resultado es:</p>
+                    <img class="results-card-mascot" id="results-card-mascot" src="img/facha.png" alt="Personaje resultado">
+                    <span class="results-highlight" id="results-highlight">ESTÁS ENTRE LAS PERSONAS QUE NO SE PREOCUPAN POR LA IA</span>
+                    
+                    <div class="results-content-row">
+                        <div class="results-text-block">
+                            <p id="results-p1">¡Estás dentro del 56% de jugadores que NO LES MOLESTA el uso de IA generativa en los videojuegos!</p>
+                            <p id="results-p2">Éste porcentaje se divide en las 4 barras de la izquierda, ¿En cuál crees que encajas?</p>
+                        </div>
+
+                        <div class="racha-interactive-container" id="racha-interactive-container" onclick="handleDislikeClick()">
+                            <img class="racha-bar-img" id="racha-bar-img" src="img/racha-apagada.png" alt="Barra Racha Dislike">
+                        </div>
+                    </div>
+
+                    <div class="facha-options-strip" id="facha-options-strip">
+                        <div class="facha-strip-bg-line bg-14"></div>
+                        <div class="facha-strip-bg-line bg-28"></div>
+                        <div class="facha-strip-bg-line bg-8"></div>
+                        <div class="facha-strip-bg-line bg-6"></div>
+
+                        <div class="facha-strip-inner">
+                            <div class="facha-opt-box" data-pct="14" onclick="toggleFachaOption(14)"><img src="img/facha.png" alt="14%"></div>
+                            <div class="facha-opt-box" data-pct="28" onclick="toggleFachaOption(28)"><img src="img/feliz.png" alt="28%"></div>
+                            <div class="facha-opt-box" data-pct="8" onclick="toggleFachaOption(8)"><img src="img/quejoso.png" alt="8%"></div>
+                            <div class="facha-opt-box" data-pct="6" onclick="toggleFachaOption(6)"><img src="img/triste.png" alt="6%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-right-main">
+                    <div class="results-chart-box" id="results-chart-box">
+                        <img class="chart-header-title" id="chart-header-title" src="img/JUGADORES.png" alt="JUGADORES">
+
+                        <div class="chart-bars">
+                            <div class="chart-bar" id="bar-14" onmouseenter="activateState(14)" onmouseleave="deactivateState()" onclick="selectPercentage(14)">
+                                <div class="bar-transp-bg"></div>
+                                <img class="bar-mascot" src="img/facha.png" alt="">
+                                <span class="bar-pct">14%</span>
+                                <div class="bar-visual"><img class="bar-img" src="img/Rec chico amarillo.png" alt=""></div>
+                            </div>
+                            <div class="chart-bar" id="bar-28" onmouseenter="activateState(28)" onmouseleave="deactivateState()" onclick="selectPercentage(28)">
+                                <div class="bar-transp-bg"></div>
+                                <img class="bar-mascot" src="img/feliz.png" alt="">
+                                <span class="bar-pct">28%</span>
+                                <div class="bar-visual"><img class="bar-img" src="img/Rec chico verdeamarillo.png" alt=""></div>
+                            </div>
+                            <div class="chart-bar" id="bar-8" onmouseenter="activateState(8)" onmouseleave="deactivateState()" onclick="selectPercentage(8)">
+                                <div class="bar-transp-bg"></div>
+                                <img class="bar-mascot" src="img/quejoso.png" alt="">
+                                <span class="bar-pct">8%</span>
+                                <div class="bar-visual"><img class="bar-img" src="img/Rec chico verde.png" alt=""></div>
+                            </div>
+                            <div class="chart-bar" id="bar-6" onmouseenter="activateState(6)" onmouseleave="deactivateState()" onclick="selectPercentage(6)">
+                                <div class="bar-transp-bg"></div>
+                                <img class="bar-mascot" src="img/triste.png" alt="">
+                                <span class="bar-pct">6%</span>
+                                <div class="bar-visual"><img class="bar-img" src="img/Rec chico celeste.png" alt=""></div>
+                            </div>
+                            <div class="chart-bar" id="bar-44" onmouseenter="activateState(44)" onmouseleave="deactivateState()" onclick="selectPercentage(44)">
+                                <div class="bar-transp-bg"></div>
+                                <img class="bar-mascot" src="img/enojado.png" alt="">
+                                <span class="bar-pct">44%</span>
+                                <div class="bar-visual"><img class="bar-img" id="bar-44-img" src="img/Barra-roja.png" alt=""></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="results-detail-panel" id="results-detail-panel">
+                        <p class="results-detail-text" id="results-detail-text">Selecciona un porcentaje</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN SEGUÍ EXPLORANDO (NÚCLEO 1) -->
+            <div class="explore-section">
+                <h3 class="explore-title">Seguí explorando:</h3>
+                <div class="explore-cards">
+                    
+                    <article class="explore-card">
+                        <div class="explore-card-inner">
+                            <button class="explore-card-btn" type="button" onclick="closeQuiz()" aria-label="Volver al Inicio">
+                                <img class="explore-photo" src="img/volver-home2.png" alt="Volver al inicio" style="object-position: top center;">
+                            </button>
+                        </div>
+                    </article>
+
+                    <article class="explore-card">
+                        <div class="explore-card-inner">
+                            <img class="explore-photo" src="img/nucleo-2-desarrolladores.png" alt="Los desarrolladores y la IA en videojuegos">
+                            <button class="play-btn" type="button" aria-label="Ir al Núcleo 2" onclick="switchFromQuizToTrivia()">
+                                <img src="img/btn-play-nucleo2.png" alt="Botón núcleo 2">
+                            </button>
+                            <p class="nucleo-caption">Los <span style="color: #38C0D3;">Desarrolladores</span> y la IA en videojuegos</p>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- OVERLAY NÚCLEO 2 -->
+<div class="quiz-overlay" id="quiz-overlay-2">
+    <div class="quiz-modal">
+        <button class="quiz-close" id="quiz-close-2" type="button" aria-label="Cerrar encuesta">&times;</button>
+        
+        <div class="trivia-stage" id="trivia-stage">
+            
+            <div class="trivia-intro" id="trivia-intro-header">
+                <h2 class="trivia-title">EL AUGE DE LA IA EN LOS VIDEOJUEGOS</h2>
+                <p class="trivia-subtitle">Acompañanos a ver como el uso de la IA generativa en el desarrollo de videojuegos fue ganando confianza y desagrado en los desarrolladores durante los últimos años.</p>
+                <p class="trivia-subtitle">Para eso te mostraremos el caso más conocido y después una trivia:</p>
+            </div>
+
+            <!-- SECCIÓN CASO DE ESTUDIO GTA -->
+            <div class="gta-case-study" id="gta-case-study">
+                <img class="gta-logo-topleft" src="img/gta-nucleo2.png" alt="GTA The Trilogy Logo">
+                
+                <div class="gta-row">
+                    <div class="gta-row-photo-wrap">
+                        <img class="gta-photo-monstruitos" src="img/foto-nucleo2.png" alt="Jugando GTA Remastered">
+                    </div>
+                    <div class="gta-text-block">
+                        <h4>¿Qué pasó en este caso?</h4>
+                        <p>Para remasterizar tres juegos clásicos de la saga GTA, al mismo tiempo, el estudio utilizó herramientas de Inteligencia Artificial para escalar automáticamente los gráficos y mejorar los personajes. Sin embargo, al no revisar bien el trabajo de la IA, el juego salió al mercado lleno de fallos gráficos, personajes deformes y errores que arruinaron la experiencia de los jugadores.</p>
+                    </div>
+                </div>
+
+                <div class="gta-row">
+                    <div class="gta-double-photos">
+                        <img class="gta-photo-small" src="img/image 98.png" alt="Lluvia GTA">
+                        <img class="gta-photo-small" src="img/image 97.png" alt="Original vs Definitive">
+                    </div>
+                    <div class="gta-text-block">
+                        <h4>¿Por qué hacemos esta trivia?</h4>
+                        <p>Esta trivia busca poner a prueba de forma rápida y divertida qué tanto sabe el público sobre cómo el uso apresurado de la IA afectó a uno de los lanzamientos más polémicos de la industria gamer.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gta-divider-line"></div>
+
+            <!-- ÁREA INTERACTIVA TRIVIA -->
+            <div class="trivia-content-area" id="trivia-interactive-area">
+                <div class="trivia-interactive-wrapper" id="trivia-interactive-wrapper">
+                    
+                    <div class="neon-lines-container state-question" id="neon-lines-container">
+                        <div class="line-falso-rosa"></div>
+                        <div class="line-verdadero-celeste"></div>
+                        <div class="line-correcto-verde"></div>
+                        <div class="line-incorrecto-rojo"></div>
+                    </div>
+
+                    <div class="trivia-robot-left">
+                        <img class="signos-preguntas-img" src="img/SIGNOS PREGUNTAS.png" alt="Signos de preguntas">
+                        <img class="robot-main-img" src="img/robot-gris.png" alt="Robot">
+                    </div>
+
+                    <div class="trivia-center-box">
+                        <div class="trivia-question-phase is-visible" id="trivia-question-phase">
+                            <div class="trivia-question-bubble" id="trivia-question-bubble">
+                                <p class="trivia-question-text" id="trivia-question-text"></p>
+                            </div>
+
+                            <div class="trivia-actions-center">
+                                <button class="trivia-answer-btn" data-answer="falso" type="button">
+                                    <img src="img/FALSO.png" alt="Falso">
+                                </button>
+                                <button class="trivia-answer-btn" data-answer="verdadero" type="button">
+                                    <img src="img/VERDADERO.png" alt="Verdadero">
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="trivia-feedback-phase" id="trivia-feedback-phase">
+                            <div class="trivia-feedback-container" id="trivia-feedback-container">
+                                <p class="trivia-feedback-title" id="trivia-feedback-title"></p>
+                                <p class="trivia-feedback-text" id="trivia-feedback-text"></p>
+                            </div>
+
+                            <!-- ACCIONES DE FEEDBACK: NEXT Y RESET AMBOS DISPONIBLES EN PREGUNTA 6 -->
+                            <div class="trivia-actions-center" id="trivia-feedback-actions">
+                                <button class="trivia-next-btn" id="trivia-next-btn" type="button">
+                                    <img src="img/NEXT.png" alt="Siguiente">
+                                </button>
+                                <button class="trivia-reset-btn" id="trivia-reset-btn" type="button" style="display: none;">
+                                    <img src="img/RESET.png" alt="Reset">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="trivia-detective-right">
+                        <img class="detective-img" src="img/detective-naranja.png" alt="Detective">
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RESULTADO FINAL NÚCLEO 2 -->
+            <div class="charts-section" id="charts-section">
+                
+                <!-- BLOQUE 1: PRIMER GRÁFICO CON TÍTULO, ETIQUETAS Y ROBOTS AFUERA -->
+                <p class="n2-intro-text">• Este gráfico se hizo a partir de la información de <strong>'GTA VI'</strong> y <strong>'GTA TRILOGY'</strong> y <strong>'Tainted Grail: The Fall of Avalon'</strong> y creamos el gráfico de 'la integración de la IA en los videojuegos'.</p>
+
+                <!-- ROBOTS POSICIONADOS EXACTAMENTE SOBRE EL HUECO Y EN CALIDAD NÍTIDA -->
+                <img class="g1-top-robots" src="img/robots-grises.png" alt="Robots">
+
+                <div class="hs-g1-container">
+                    <h3 class="g1-main-title">La integración de la IA en los videojuegos</h3>
+
+                    <div class="g1-labels-header">
+                        <h4 class="g1-subtitle">Integración de IA</h4>
+                        <span class="g1-interactive-hint">*botones interactivos</span>
+                    </div>
+
+                    <img class="n2-graphic-img" src="img/grafico-nucleo2-1.png" style="transform: scale(1) translate(25px, 35px);" alt="Gráfico 1">                    
+                    
+                    <!-- PUNTOS INTERACTIVOS GRÁFICO 1 -->
+                    <div class="n2-hotspot n2-hotspot-orange hs-g1-2024" onclick="showInfoModal('g1_2024', 'orange')">
+                        <img class="img-default" src="img/Property 1=Variant6.png" alt="Aviso 2024">
+                        <img class="img-hover" src="img/Property 1=Variant3.png" alt="Aviso 2024 Activo">
+                    </div>
+
+                    <div class="n2-hotspot n2-hotspot-orange hs-g1-2025" onclick="showInfoModal('g1_2025', 'orange')">
+                        <img class="img-default" src="img/Property 1=Variant6.png" alt="Aviso 2025">
+                        <img class="img-hover" src="img/Property 1=Variant3.png" alt="Aviso 2025 Activo">
+                    </div>
+
+                    <div class="n2-hotspot n2-hotspot-orange hs-g1-2026" onclick="showInfoModal('g1_2026', 'orange')">
+                        <img class="img-default" src="img/Property 1=Variant6.png" alt="Aviso 2026">
+                        <img class="img-hover" src="img/Property 1=Variant3.png" alt="Aviso 2026 Activo">
+                    </div>
+                </div>
+
+                <!-- BLOQUE 2: CASOS CENTRADOS -->
+                <div class="n2-cases-wrapper">
+                    <div class="n2-case-card">
+                        <img class="n2-case-img" src="img/GTA.png" alt="GTA Trilogy">
+                        <p class="n2-case-desc">• La IA generativa se integró en estos videojuegos de diferentes maneras, por ejemplo: <strong>GTA TRILOGY</strong> donde la usaron para mejorar texturas y modelos de personaje.</p>
+                    </div>
+
+                    <div class="n2-case-card">
+                        <img class="n2-case-img" src="img/TFOA.png" alt="Tainted Grail">
+                        <p class="n2-case-desc">• En <strong>Tainted Grail: The Fall of Avalon</strong> se utilizó para crear el mundo a tiempo real.</p>
+                    </div>
+
+                    <div class="n2-case-card">
+                        <img class="n2-case-img" src="img/GTA6.png" alt="GTA VI">
+                        <p class="n2-case-desc">• Por último, <strong>GTA VI</strong> es un caso raro, los desarrolladores afirman que no utilizaron IA generativa en el videojuego.</p>
+                    </div>
+                </div>
+
+                <!-- BLOQUE 3: FUENTES DEL SEGUNDO GRÁFICO (LAS DOS IMÁGENES GRANDES ORIGINALES) -->
+                <div class="n2-sources-header">
+                    <p class="n2-intro-text">• Este gráfico está hecho a partir de dos fuentes de información:</p>
+                    <div class="n2-sources-pics">
+                        <img src="img/solitario.png" alt="Desarrollador Solitario">
+                        <img src="img/hacker.png" alt="Desarrollador Hacker">
+                    </div>
+                    <p class="n2-intro-text">
+                        <span class="text-cyan-label">"Uso de la IA generativa en el desarrollo"</span> y <strong style="color: var(--color-orange);">"Desagrado de los desarrolladores"</strong>
+                    </p>
+                    <p class="n2-intro-text n2-break-paragraph">
+                        y con esto creamos el gráfico de <u>"¿Amor u odio? La paradoja de la IA"</u>.
+                    </p>
+                </div>
+
+                <!-- BLOQUE 4: SEGUNDO GRÁFICO -->
+                <div class="hs-g2-container">
+                    <!-- PERSONAJES SOBRE EL MARCO DEL CUADRO DEL GRÁFICO 2 -->
+                    <img class="g2-top-left-mascot" src="img/inteligente-sonriendo.png" alt="Inteligente Sonriendo">
+                    <img class="g2-top-right-mascot" src="img/detective-naranja.png" alt="Detective Naranja">
+
+                    <h3 class="g2-main-title">¿Amor u odio? La paradoja en el uso de IA</h3>
+
+                    <div class="g2-labels-header">
+                        <h4 class="g2-subtitle">Totalidad de<br>desarrolladores</h4>
+                        <span class="g1-interactive-hint">*botones interactivos</span>
+                    </div>
+
+                    <img class="n2-graphic-img" src="img/grafico-nucleo2-2.png" alt="Gráfico 2: ¿Amor u odio? La paradoja en el uso de IA">
+
+                    <!-- PUNTOS INTERACTIVOS CELESTES (CORREGIDOS) -->
+                    <div class="n2-hotspot n2-hotspot-blue hs-g2-blue-2024" onclick="showInfoModal('g2_blue_2024', 'cyan')">
+                        <img class="img-default" src="img/Property 1=Variant4.png" alt="Uso 2024">
+                        <img class="img-hover" src="img/Property 1=Default.png" alt="Uso 2024 Activo">
+                    </div>
+
+                    <div class="n2-hotspot n2-hotspot-blue hs-g2-blue-2025" onclick="showInfoModal('g2_blue_2025', 'cyan')">
+                        <img class="img-default" src="img/Property 1=Variant4.png" alt="Uso 2025">
+                        <img class="img-hover" src="img/Property 1=Default.png" alt="Uso 2025 Activo">
+                    </div>
+
+                    <div class="n2-hotspot n2-hotspot-blue hs-g2-blue-2026" onclick="showInfoModal('g2_blue_2026', 'cyan')">
+                        <img class="img-default" src="img/Property 1=Variant4.png" alt="Uso 2026">
+                        <img class="img-hover" src="img/Property 1=Default.png" alt="Uso 2026 Activo">
+                    </div>
+
+                    <!-- PUNTOS INTERACTIVOS NARANJAS -->
+                    <div class="n2-hotspot n2-hotspot-orange hs-g2-orange-2024" onclick="showInfoModal('g2_orange_2024', 'orange')">
+                        <img class="img-default" src="img/Property 1=Variant6.png" alt="Desagrado 2024">
+                        <img class="img-hover" src="img/Property 1=Variant3.png" alt="Desagrado 2024 Activo">
+                    </div>
+
+                    <div class="n2-hotspot n2-hotspot-orange hs-g2-orange-2025" onclick="showInfoModal('g2_orange_2025', 'orange')">
+                        <img class="img-default" src="img/Property 1=Variant6.png" alt="Desagrado 2025">
+                        <img class="img-hover" src="img/Property 1=Variant3.png" alt="Desagrado 2025 Activo">
+                    </div>
+
+                    <div class="n2-hotspot n2-hotspot-orange hs-g2-orange-2026" onclick="showInfoModal('g2_orange_2026', 'orange')">
+                        <img class="img-default" src="img/Property 1=Variant6.png" alt="Desagrado 2026">
+                        <img class="img-hover" src="img/Property 1=Variant3.png" alt="Desagrado 2026 Activo">
+                    </div>
+
+                    <!-- LEYENDA DE REFERENCIAS INFERIOR IZQUIERDA -->
+                    <div class="g2-legend-footer">
+                        <div class="g2-legend-item cyan">
+                            <img class="g2-legend-icon" src="img/Property 1=Default.png" alt="Icono celeste">
+                            <span>Uso de la IA generativa en el desarrollo.</span>
+                        </div>
+                        <div class="g2-legend-item orange">
+                            <img class="g2-legend-icon" src="img/Property 1=Variant6.png" alt="Icono naranja">
+                            <span>Desagrado de desarrolladores.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BLOQUE 5: CARDS RESUMEN -->
+                <div class="n2-info-cards">
+                    <div class="n2-info-box box-cyan">
+                        <p>• <strong>El informe State of the Game Industry 2026</strong> revela que el 36% de los profesionales de la industria utiliza herramientas de IA generativa en sus labores diarias, destacando su uso en tareas de investigación, administración y soporte de código. No obstante, la adopción es mucho más alta en áreas comerciales y de marketing (58%) que dentro de los propios estudios de desarrollo (30%).</p>
+                    </div>
+
+                    <div class="n2-info-box box-orange">
+                        <p>• <strong>El descontento hacia esta tecnología</strong> ha alcanzado niveles récord: el 52% de los encuestados opina que la IA generativa tiene un impacto negativo en la industria, aumentando considerablemente desde el 30% registrado el año previo. Este escepticismo es especialmente alto entre profesionales de arte visual (64%), narrativa (63%) y programación (59%), quienes expresan preocupación por el desplazamiento laboral y la degradación de la creatividad.</p>
+                    </div>
+                </div>
+
+                <!-- FOOTER INFOGRÁFICO Y FUENTES LIMPIAS Y CENTRADAS -->
+                <div class="infographic-footer">
+                    <img class="footer-logo" src="img/aten-ia.png" alt="aten-ia logo"> 
+                    
+                    <h2 class="thanks-banner">¡MUCHAS GRACIAS POR VISITARNOS!</h2>
+                    
+                    <div class="mascots-gallery">
+                        <img class="group-photo" src="img/SALUDO FINAL.png" alt="Personajes aten-ia">
+                    </div>
+
+                    <div class="sources-accordion" id="sourcesAccordion">
+                        <button class="sources-btn" type="button" onclick="toggleSources()">
+                            ¿Querés profundizar en las fuentes? <span class="plus-icon">+</span>
+                        </button>
+                        <div class="sources-content">
+                            <ul>
+                                <li>• <strong>Opinión de los jugadores:</strong> <a href="https://culturageek.com.ar/bain-company-informe-ia-videojuegos-gamers/" target="_blank">Informe Bain & Company sobre IA y Gamers</a></li>
+                                <li>• <strong>Ubisoft y los sistemas con IA:</strong> <a href="https://www.infobae.com/tecno/2025/11/24/ubisoft-apuesta-por-la-ia-generativa-npc-que-cambia-su-comportamiento-y-asistentes-en-los-juegos/" target="_blank">Ubisoft apuesta por IA generativa en NPCs</a></li>
+                                <li>• <strong>Opinión de los desarrolladores:</strong> <a href="https://gdconf.com/article/gdc-2026-state-of-the-game-industry-reveals-impact-of-layoffs-generative-ai-and-more/?utm_source=chatgpt.com" target="_blank">GDC State of the Game Industry</a></li>
+                                <li>• <strong>GTA TRILOGY:</strong> <a href="https://blog.heroesdepapel.es/entre-bugs-y-redisenos-la-polemica-en-torno-a-gta-the-trilogy/" target="_blank">La polémica en torno a GTA: The Trilogy</a></li>
+                                <li>• <strong>GTA VI:</strong> <a href="https://www.infobae.com/tecno/2026/08/30/gta-6-se-desarrollo-con-cero-ia-generativa-confirma-rockstar/" target="_blank">GTA 6 se desarrolló con cero IA generativa</a></li>
+                                <li>• <strong>STELLARIS:</strong> <a href="https://vandal.elespanol.com/sagas/stellaris" target="_blank">Información y análisis en Vandal</a></li>
+                                <li>• <strong>TAINTED GRAIL:</strong> <a href="https://vandal.elespanol.com/analisis/ps5/tainted-grail-the-fall-of-avalon/202185#p-89" target="_blank">Análisis Tainted Grail: The Fall of Avalon</a></li>
+                                <li>• <strong>THE FINALS:</strong> <a href="https://www.eurogamer.net/the-finals-criticised-by-actors-and-designers-for-use-of-ai-commentator-voiceovers" target="_blank">Críticas por el uso de voces IA (Eurogamer)</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN SEGUÍ EXPLORANDO (RESULTADO NÚCLEO 2) -->
+                <div class="explore-section">
+                    <h3 class="explore-title">Seguí explorando:</h3>
+                    <div class="explore-cards">
+                        
+                        <article class="explore-card">
+                            <div class="explore-card-inner">
+                                <img class="explore-photo" src="img/nucleo-1-jugadores.png" alt="Los jugadores y la IA en videojuegos">
+                                <button class="play-btn" type="button" aria-label="Ir al Núcleo 1" onclick="switchFromTriviaToQuiz()">
+                                    <img src="img/btn-play-nucleo1.png" alt="Botón núcleo 1">
+                                </button>
+                                <p class="nucleo-caption">Los <span>jugadores</span> y la IA en videojuegos</p>
+                            </div>
+                        </article>
+
+                        <article class="explore-card">
+                            <div class="explore-card-inner">
+                                <button class="explore-card-btn" type="button" onclick="closeTrivia()" aria-label="Volver al Inicio">
+                                    <img class="explore-photo" src="img/volver-home2.png" alt="Volver al inicio" style="object-position: top center;">
+                                </button>
+                            </div>
+                        </article>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- POPUP MODAL INFORMACIÓN -->
+<div class="info-popup-overlay" id="infoPopupOverlay" onclick="closeInfoModal(event)">
+    <div class="info-popup-card" id="infoPopupCard">
+        <button class="info-popup-close" type="button" onclick="closeInfoModalForce()">&times;</button>
+        <p class="info-popup-text" id="infoPopupText"></p>
+    </div>
+</div>
+
+<script>
+var questions = [
+    "¿TE AGRADA LA INTELIGENCIA ARTIFICIAL?",
+    "¿TE GUSTAN LOS VIDEOJUEGOS?",
+    "¿TE INCOMODA LA IA GENERATIVA EN LOS VIDEOJUEGOS?"
+];
+
+var progressImages = [
+    'img/progreso1-nucleo1.png',
+    'img/progreso2-nucleo1.png',
+    'img/progreso3-nucleo1.png'
+];
+
+var results = {
+    facha: {
+        type: 'facha',
+        combos: ["si-no-no", "si-si-no", "no-no-si"],
+        highlight: "ESTÁS ENTRE LAS PERSONAS QUE NO SE PREOCUPAN POR LA IA",
+        highlightColor: "var(--color-orange)",
+        mascot: "img/facha.png",
+        p1: "¡Estás dentro del 56% de jugadores que NO LES MOLESTA el uso de IA generativa en los videojuegos!",
+        p2: "Éste porcentaje se divide en las 4 barras de la izquierda, ¿En cuál crees que encajas?",
+        hideRacha: true,
+        isFacha: true,
+        themeBtn: 'cyan'
+    },
+    fuera: {
+        type: 'fuera',
+        combos: ["no-no-no"],
+        highlight: "¡NI SIQUIERA ESTÁS DENTRO DE LA ENCUESTA! :0",
+        highlightColor: "#27AE60",
+        mascot: "img/zzz.png",
+        p1: "¡Estás en el 99,9% de las personas del mundo que NO pertenecen a esta encuesta!",
+        p2: "No te agrada ni te incomoda nada sobre los objetivos de la encuesta, por lo que ni siquiera entraste en ella...\n¡Ponele más onda!",
+        hideRacha: true,
+        isFacha: false,
+        themeBtn: 'green'
+    },
+    enojado: {
+        type: 'enojado',
+        combos: ["no-si-si", "si-no-si", "si-si-si"],
+        highlight: "ESTÁS ENTRE LAS PERSONAS QUE NO ADMITEN EL USO DE IA",
+        highlightColor: "#9B51E0",
+        mascot: "img/enojado.png",
+        p1: "¡Estás en el 44% de jugadores EN CONTRA del uso de IA generativa en los videojuegos!",
+        p2: "Sé libre de expresar tu disconfort acá >>>>",
+        hideRacha: false,
+        isFacha: false,
+        themeBtn: 'cyan'
+    }
+};
+
+var selectedFachaPct = null;
+
+var rachaImages = [
+    'img/racha-apagada.png',
+    'img/racha-1.png',
+    'img/racha-2.png',
+    'img/racha-3.png',
+    'img/racha-9.png',
+    'img/racha-+9999.png'
+];
+
+var streakStep = 0;
+
+var pctDescriptions = {
+    14: "El 14% dijo sentirse mucho más cómodo.",
+    28: "El 28% dijo sentirse algo más cómodo.",
+    8: "El 8% dijo sentirse menos cómodo.",
+    6: "El 6% dijo sentirse mucho menos cómodo.",
+    44: "El 44% demostró mala recepción."
+};
+
+/* PREGUNTAS NÚCLEO 2 */
+var questionsNucleo2 = [
+    {
+        id: 1,
+        question: "1. ¿Esta colección de GTA includes tres juegos viejos adaptados con gráficos renovados?",
+        correctAnswer: "verdadero",
+        explanationCorrect: "la coleccion incluye a los aclamados juegos GTA III, Vice City y San Andreas",
+        explanationIncorrect: "la coleccion incluye a los aclamados juegos GTA III, Vice City y San Andreas."
+    },
+    {
+        id: 2,
+        question: "2. ¿El juego en su fecha de lanzamiento salio perfecto a la venta y no tuvo ningún error ni fallo gráfico?",
+        correctAnswer: "falso",
+        explanationCorrect: "Salió con muchos errores, bugs y fallos de rendimiento por que rockstar empleo un tercero que los desarolle.",
+        explanationIncorrect: "Salió con muchos errores, bugs y fallos de rendimiento por que rockstar empleo un tercero que los desarolle."
+    },
+    {
+        id: 3,
+        question: "3. ¿A los personajes del juego les cambiaron las caras y los gráficos para que parezcan más de dibujo animado?",
+        correctAnswer: "verdadero",
+        explanationCorrect: "Se usó un estilo gráfico tipo cartoon que borro el estilo de arte de cada viedojuego.",
+        explanationIncorrect: "Se usó un estilo gráfico tipo cartoon que borro el estilo de arte de cada viedojuego."
+    },
+    {
+        id: 4,
+        question: "4. ¿La versión para computadoras (PC) fue la que más problemas y errores tuvo de rendemiento y optimizacion?",
+        correctAnswer: "verdadero",
+        explanationCorrect: "Fue la versión más criticada y con más fallos de todos de rendimiento y optimizacion entre otros",
+        explanationIncorrect: "Fue la versión más criticada y con más fallos de todos de rendimiento y optimizacion entre otros"
+    },
+    {
+        id: 5,
+        question: "5. ¿En GTA III la lluvia se veía tan fuerte que casi no te dejaba ver la pantalla ni jugar bien secciones de la historia?",
+        correctAnswer: "verdadero",
+        explanationCorrect: "La lluvia era tan intensa que tapaba la visión del jugador  y no permitia jugar normalmente",
+        explanationIncorrect: "La lluvia era tan intensa que tapaba la visión del jugador  y no permitia jugar normalmente"
+    },
+    {
+        id: 6,
+        question: "6. ¿Los tres juegos de la Definitive Edition fueron rehechos desde cero utilizando un nuevo motor grafico?",
+        correctAnswer: "falso",
+        explanationCorrect: "Usaron los motores originales con mejoras de IA para adaptar los gráficos a distintas consolas.",
+        explanationIncorrect: "Usaron los motores originales con mejoras de IA para adaptar los gráficos a distintas consolas."
+    }
+];
+
+const infoData = {
+    g1_2024: "<strong>2024 (Adopción Inicial - 12%):</strong> Tras polémicas por remasterizaciones con errores gráficos o IA deficiente en lanzamientos como GTA: The Trilogy, los estudios comenzaron a experimentar con la IA de forma cautelosa y principalmente interna.",
+    g1_2025: "<strong>2025 (Expansión e Integración - 45%):</strong> Con títulos de desarrolladoras independientes y de mediano tamaño como Tainted Grail: The Fall of Avalon y expansiones masivas en sagas como Stellaris, el uso de algoritmos de apoyo para generación de entornos, diseño procedimental y optimización se multiplicó exponencialmente.",
+    g1_2026: "<strong>2026 (Consolidación y Gran Debate - 78%):</strong> El uso de IA en la industria alcanzó su nivel más alto hasta la fecha. Sin embargo, genera grandes debates éticos. Frente a esta tendencia masiva, empresas como Rockstar Games han sentado postura confirmando que títulos de gran escala como GTA 6 fueron desarrollados con \"cero IA generativa\", priorizando el trabajo técnico y artístico humano como un diferencial de calidad.",
+
+    g2_blue_2024: "<strong>2024:</strong> El uso de tecnologías como la IA alcanzaron un 31%",
+    g2_blue_2025: "<strong>2025:</strong> El uso de IA aumentó un 6% respecto al año anterior.",
+    g2_blue_2026: "<strong>2026:</strong> El uso de IA se mantuvo igual respecto al año anterior.",
+
+    g2_orange_2024: "<strong>2024:</strong> El desagrado por la IA generativa alcanzó un 18%",
+    g2_orange_2025: "<strong>2025:</strong> El desagrado por la IA generativa alcanzó un 30%",
+    g2_orange_2026: "<strong>2026:</strong> El desagrado por la IA generativa alcanzó un 52%"
+};
+
+var mapFondos = {
+    14: 'img/Fondo-grafico-naranja.png',
+    28: 'img/Fondo-grafico-amarillo.png',
+    8:  'img/Fondo-grafico-verde.png',
+    6:  'img/Fondo-grafico-celeste.png',
+    44: 'img/Fondo-grafico-rojo.png'
+};
+
+var mapTitulos = {
+    14: 'img/JUGADORES-naranja.png',
+    28: 'img/JUGADORES-amarillo.png',
+    8:  'img/JUGADORES-verde.png',
+    6:  'img/JUGADORES-celeste.png',
+    44: 'img/JUGADORES-rojo.png'
+};
+
+var mapCuadroInferior = {
+    14: 'img/Rectangle-naranja.png',
+    28: 'img/Rectangle-amarillo.png',
+    8:  'img/Rectangle-verde.png',
+    6:  'img/Rectangle-celeste.png',
+    44: 'img/Rectangle-rojo.png'
+};
+
+var currentQuestion = 0;
+var answers = [];
+var isTransitioning = false;
+var currentQuestionN2 = 0;
+
+var homeScreen = document.getElementById('home-screen');
+var overlay = document.getElementById('quiz-overlay');
+var stage = document.getElementById('quiz-stage');
+var questionEl = document.getElementById('quiz-question');
+var closeBtn = document.getElementById('quiz-close');
+var answerButtons = document.querySelectorAll('.quiz-answer');
+var playButtons = document.querySelectorAll('.play-btn');
+var resultsStage = document.getElementById('results-stage');
+var resultsHighlight = document.getElementById('results-highlight');
+var resultsCardMascot = document.getElementById('results-card-mascot');
+var resultsP1 = document.getElementById('results-p1');
+var resultsP2 = document.getElementById('results-p2');
+
+var rachaBarImg = document.getElementById('racha-bar-img');
+var resultsDetailText = document.getElementById('results-detail-text');
+
+var mascotEl = document.getElementById('quiz-mascot-img');
+var progressEl = document.getElementById('quiz-progress-img');
+
+var overlay2 = document.getElementById('quiz-overlay-2');
+var closeBtn2 = document.getElementById('quiz-close-2');
+var triviaIntroHeader = document.getElementById('trivia-intro-header');
+var gtaCaseStudy = document.getElementById('gta-case-study');
+var triviaQuestionPhase = document.getElementById('trivia-question-phase');
+var triviaFeedbackPhase = document.getElementById('trivia-feedback-phase');
+var triviaQuestionText = document.getElementById('trivia-question-text');
+var triviaAnswerButtons = document.querySelectorAll('.trivia-answer-btn');
+var triviaFeedbackContainer = document.getElementById('trivia-feedback-container');
+var triviaFeedbackTitle = document.getElementById('trivia-feedback-title');
+var triviaFeedbackText = document.getElementById('trivia-feedback-text');
+var triviaNextBtn = document.getElementById('trivia-next-btn');
+var triviaResetBtn = document.getElementById('trivia-reset-btn');
+var chartsSection = document.getElementById('charts-section');
+var triviaInteractiveArea = document.getElementById('trivia-interactive-area');
+
+function setQuestionText(){
+    questionEl.textContent = questions[currentQuestion];
+    if(progressEl && progressImages[currentQuestion]) progressEl.src = progressImages[currentQuestion];
+    if(mascotEl) mascotEl.src = 'img/inteligente-hablando.png';
+    answerButtons.forEach(btn => btn.classList.remove('is-selected'));
+}
+
+function updateQuestion(){
+    setQuestionText();
+    isTransitioning = false;
+}
+
+function openQuiz(){
+    currentQuestion = 0;
+    answers = [];
+    isTransitioning = false;
+    resultsStage.classList.remove('is-visible');
+    stage.style.display = '';
+    setQuestionText();
+    resetDislikeRacha();
+    resetFachaSelection();
+    deactivateState();
+
+    overlay.classList.add('is-active');
+    homeScreen.classList.add('is-blurred');
+}
+
+function closeQuiz(){
+    overlay.classList.remove('is-active');
+    homeScreen.classList.remove('is-blurred');
+}
+
+function findResultKey(finalAnswers){
+    var combo = finalAnswers.join('-');
+    for(var key in results){
+        if(results[key].combos.indexOf(combo) !== -1) return key;
+    }
+    return null;
+}
+
+function resetDislikeRacha(){
+    streakStep = 0;
+    if(rachaBarImg) rachaBarImg.src = rachaImages[0];
+}
+
+function handleDislikeClick(){
+    if(streakStep < rachaImages.length - 1){
+        streakStep++;
+        rachaBarImg.src = rachaImages[streakStep];
+    } else {
+        resetDislikeRacha();
+    }
+}
+
+function toggleFachaOption(pct) {
+    const strip = document.getElementById('facha-options-strip');
+    const boxes = document.querySelectorAll('.facha-opt-box');
+
+    if (selectedFachaPct === pct) {
+        resetFachaSelection();
+    } else {
+        selectedFachaPct = pct;
+        strip.className = 'facha-options-strip has-selection sel-' + pct;
+        boxes.forEach(box => {
+            if (parseInt(box.dataset.pct) === pct) {
+                box.classList.add('is-selected');
+            } else {
+                box.classList.remove('is-selected');
+            }
+        });
+    }
+}
+
+function resetFachaSelection() {
+    selectedFachaPct = null;
+    const strip = document.getElementById('facha-options-strip');
+    if (strip) strip.className = 'facha-options-strip';
+    document.querySelectorAll('.facha-opt-box').forEach(box => box.classList.remove('is-selected'));
+}
+
+function activateState(pct) {
+    document.querySelectorAll('.chart-bar').forEach(bar => bar.classList.remove('is-active'));
+    
+    var barItem = document.getElementById('bar-' + pct);
+    if(barItem) barItem.classList.add('is-active');
+
+    var chartBox = document.getElementById('results-chart-box');
+    if(chartBox && mapFondos[pct]) {
+        chartBox.style.backgroundImage = "url('" + mapFondos[pct] + "')";
+    }
+
+    var headerTitle = document.getElementById('chart-header-title');
+    if(headerTitle && mapTitulos[pct]) {
+        headerTitle.src = mapTitulos[pct];
+    }
+
+    var detailPanel = document.getElementById('results-detail-panel');
+    var detailText = document.getElementById('results-detail-text');
+    if(detailPanel && mapCuadroInferior[pct]) {
+        detailPanel.style.backgroundImage = "url('" + mapCuadroInferior[pct] + "')";
+        detailPanel.style.backgroundSize = "100% 100%";
+    }
+    if(detailText && pctDescriptions[pct]) {
+        detailText.innerHTML = "<strong>" + pctDescriptions[pct] + "</strong>";
+    }
+}
+
+function deactivateState() {
+    document.querySelectorAll('.chart-bar').forEach(bar => bar.classList.remove('is-active'));
+    
+    var chartBox = document.getElementById('results-chart-box');
+    if(chartBox) {
+        chartBox.style.backgroundImage = "url('img/rec grafico resultado.png')";
+    }
+
+    var headerTitle = document.getElementById('chart-header-title');
+    if(headerTitle) {
+        headerTitle.src = 'img/JUGADORES.png';
+    }
+
+    var detailPanel = document.getElementById('results-detail-panel');
+    var detailText = document.getElementById('results-detail-text');
+    if(detailPanel) {
+        detailPanel.style.backgroundImage = 'none';
+    }
+    if(detailText) {
+        detailText.innerHTML = "Selecciona un porcentaje";
+    }
+}
+
+function selectPercentage(pct){
+    activateState(pct);
+}
+
+function showResult(key){
+    var result = results[key];
+    var leftCard = document.getElementById('results-left-card');
+
+    resultsHighlight.textContent = result.highlight;
+    resultsHighlight.style.color = result.highlightColor;
+    resultsCardMascot.src = result.mascot;
+    resultsP1.textContent = result.p1;
+    resultsP2.textContent = result.p2;
+
+    resetDislikeRacha();
+    resetFachaSelection();
+    deactivateState();
+
+    if(leftCard){
+        leftCard.classList.toggle('hide-racha', result.hideRacha);
+        leftCard.classList.toggle('is-facha', result.isFacha);
+    }
+
+    stage.style.display = 'none';
+    resultsStage.classList.add('is-visible');
+}
+
+function handleResults(finalAnswers){
+    var key = findResultKey(finalAnswers);
+    if(key) showResult(key);
+    else closeQuiz();
+}
+
+function handleAnswer(value, button){
+    if(isTransitioning) return;
+    isTransitioning = true;
+    answers.push(value);
+    button.classList.add('is-selected');
+
+    if(mascotEl) mascotEl.src = 'img/inteligente-sonriendo.png';
+    stage.classList.add('is-fading');
+
+    setTimeout(function(){
+        currentQuestion++;
+        if(currentQuestion < questions.length){
+            updateQuestion();
+            setTimeout(() => stage.classList.remove('is-fading'), 50);
+        }else{
+            isTransitioning = false;
+            stage.classList.remove('is-fading');
+            handleResults(answers);
+        }
+    }, 220);
+}
+
+/* LÓGICA NÚCLEO 2 */
+function setTriviaQuestion(){
+    var current = questionsNucleo2[currentQuestionN2];
+    triviaQuestionText.textContent = current.question;
+    
+    var interactiveWrapper = document.getElementById('trivia-interactive-wrapper');
+    if(interactiveWrapper) {
+        interactiveWrapper.classList.remove('has-feedback');
+    }
+
+    var neonContainer = document.getElementById('neon-lines-container');
+    if(neonContainer) {
+        neonContainer.className = 'neon-lines-container state-question';
+    }
+
+    triviaFeedbackPhase.classList.remove('is-visible');
+    triviaQuestionPhase.classList.add('is-visible');
+}
+
+function openTrivia(){
+    currentQuestionN2 = 0;
+    triviaIntroHeader.style.display = 'block';
+    if(gtaCaseStudy) gtaCaseStudy.style.display = 'flex';
+    triviaInteractiveArea.style.display = 'flex';
+    chartsSection.classList.remove('is-visible');
+    setTriviaQuestion();
+    overlay2.classList.add('is-active');
+    homeScreen.classList.add('is-blurred');
+}
+
+function closeTrivia(){
+    overlay2.classList.remove('is-active');
+    homeScreen.classList.remove('is-blurred');
+}
+
+function switchFromQuizToTrivia(){
+    closeQuiz();
+    setTimeout(() => openTrivia(), 200);
+}
+
+function switchFromTriviaToQuiz(){
+    closeTrivia();
+    setTimeout(() => openQuiz(), 200);
+}
+
+function handleTriviaAnswer(selected){
+    var current = questionsNucleo2[currentQuestionN2];
+    var isCorrect = selected === current.correctAnswer;
+
+    var interactiveWrapper = document.getElementById('trivia-interactive-wrapper');
+    if(interactiveWrapper) {
+        interactiveWrapper.classList.add('has-feedback');
+    }
+
+    var neonContainer = document.getElementById('neon-lines-container');
+    if(neonContainer) {
+        neonContainer.className = 'neon-lines-container ' + (isCorrect ? 'state-correct' : 'state-incorrect');
+    }
+
+    triviaFeedbackContainer.classList.remove('is-correct', 'is-incorrect');
+    triviaFeedbackContainer.classList.add(isCorrect ? 'is-correct' : 'is-incorrect');
+    triviaFeedbackTitle.textContent = isCorrect ? '¡ CORRECTO !' : '¡ INCORRECTO !';
+    triviaFeedbackText.textContent = isCorrect ? current.explanationCorrect : current.explanationIncorrect;
+
+    triviaQuestionPhase.classList.remove('is-visible');
+    triviaFeedbackPhase.classList.add('is-visible');
+
+    if(currentQuestionN2 === questionsNucleo2.length - 1){
+        triviaNextBtn.style.display = 'block';
+        triviaResetBtn.style.display = 'block';
+    } else {
+        triviaNextBtn.style.display = 'block';
+        triviaResetBtn.style.display = 'none';
+    }
+}
+
+function nextTriviaQuestion(){
+    if(currentQuestionN2 < questionsNucleo2.length - 1){
+        currentQuestionN2++;
+        setTriviaQuestion();
+    }else{
+        triviaIntroHeader.style.display = 'none';
+        if(gtaCaseStudy) gtaCaseStudy.style.display = 'none';
+        triviaInteractiveArea.style.display = 'none';
+        chartsSection.classList.add('is-visible');
+    }
+}
+
+function resetTrivia(){
+    currentQuestionN2 = 0;
+    setTriviaQuestion();
+}
+
+function showInfoModal(key, theme) {
+    const popupOverlay = document.getElementById('infoPopupOverlay');
+    const card = document.getElementById('infoPopupCard');
+    const textElem = document.getElementById('infoPopupText');
+
+    if (infoData[key]) {
+        textElem.innerHTML = infoData[key];
+        card.classList.toggle('theme-cyan', theme === 'cyan');
+        popupOverlay.classList.add('is-open');
+    }
+}
+
+function closeInfoModal(e) {
+    if (e.target.id === 'infoPopupOverlay') {
+        document.getElementById('infoPopupOverlay').classList.remove('is-open');
+    }
+}
+
+function closeInfoModalForce() {
+    document.getElementById('infoPopupOverlay').classList.remove('is-open');
+}
+
+function toggleSources() {
+    document.getElementById('sourcesAccordion').classList.toggle('is-open');
+}
+
+playButtons.forEach(btn => {
+    btn.addEventListener('click', function(){
+        var card = btn.closest('.nucleo-card');
+        if(card && card.dataset.nucleo === '1') openQuiz();
+        else if(card && card.dataset.nucleo === '2') openTrivia();
+    });
+});
+
+answerButtons.forEach(btn => btn.addEventListener('click', () => handleAnswer(btn.dataset.answer, btn)));
+closeBtn.addEventListener('click', closeQuiz);
+triviaAnswerButtons.forEach(btn => btn.addEventListener('click', () => handleTriviaAnswer(btn.dataset.answer)));
+triviaNextBtn.addEventListener('click', nextTriviaQuestion);
+triviaResetBtn.addEventListener('click', resetTrivia);
+closeBtn2.addEventListener('click', closeTrivia);
+</script>
+</body>
+</html>
